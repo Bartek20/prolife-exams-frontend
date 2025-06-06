@@ -1,0 +1,5 @@
+<p-card [style]="{'max-width':'800px'}">
+ <div class="selector">
+   <p-select [options]="options" [loading]="isLoading" placeholder="Wybierz egzamin z listy" emptyMessage="Brak egzaminów do wyboru" (onChange)="examSelect($event)" />
+ </div>
+</p-card>

@@ -1,0 +1,145 @@
+<p-card [header]="mode == 'create' ? 'Utwórz egzamin' : 'Ustawienia egzaminu'">
+  <div class="form">
+    <div class="inline">
+      <p-float-label variant="on">
+        <input
+          type="text"
+          name="exam-name"
+          id="exam-name"
+          pInputText
+          [(ngModel)]="settings.name"
+        />
+        <label for="exam-name">Nazwa egzaminu</label>
+      </p-float-label>
+      <p-input-group>
+        <p-float-label variant="on">
+          <input
+            type="text"
+            name="exam-code"
+            id="exam-code"
+            [(ngModel)]="settings.accessCode"
+            pInputText
+            [disabled]="mode == 'edit'"
+          />
+          <label for="exam-code">Kod dostępu</label>
+        </p-float-label>
+        <p-inputgroup-addon>
+          @if (mode == 'create') {
+            <p-button icon="pi pi-sync" text (onClick)="generateAccessCode()" severity="contrast" />
+          }
+          @else {
+            <p-button icon="pi pi-clipboard" text (onClick)="copyAccessCode()" severity="contrast" />
+          }
+        </p-inputgroup-addon>
+      </p-input-group>
+    </div>
+    <div class="inline">
+      <p-float-label variant="on">
+        <p-date-picker inputId="exam-start-date" showIcon dateFormat="dd/mm/yy" [(ngModel)]="settings.startDate" />
+        <label for="exam-start-date">Data rozpoczęcia</label>
+      </p-float-label>
+      <p-float-label variant="on">
+        <p-date-picker inputId="exam-start-time" showIcon dateFormat="HH:mm" timeOnly icon="pi pi-clock" [(ngModel)]="settings.startTime" />
+        <label for="exam-start-time">Czas rozpoczęcia</label>
+      </p-float-label>
+    </div>
+    <div class="inline">
+      <p-float-label variant="on">
+        <p-date-picker inputId="exam-end-date" showIcon dateFormat="dd/mm/yy" [(ngModel)]="settings.endDate" />
+        <label for="exam-end-date">Data zakończenia</label>
+      </p-float-label>
+      <p-float-label variant="on">
+        <p-date-picker inputId="exam-end-time" showIcon dateFormat="HH:mm" timeOnly icon="pi pi-clock" [(ngModel)]="settings.endTime" />
+        <label for="exam-end-time">Czas zakończenia</label>
+      </p-float-label>
+    </div>
+    <div class="inline inline-3">
+      <p-float-label variant="on">
+        <p-input-mask id="exam-duration" mask="99:99:99" slotChar="HH:mm:ss" [(ngModel)]="settings.duration" />
+        <label for="exam-duration">Czas trwania egzaminu</label>
+      </p-float-label>
+      <p-float-label variant="on">
+        <p-input-number id="exam-questions" [(ngModel)]="settings.questionNumber" min="1" max="99" />
+        <label for="exam-questions">Liczba pytań</label>
+      </p-float-label>
+      <p-float-label variant="on">
+        <p-input-number id="exam-passing" [(ngModel)]="settings.passingScore" min="0" [max]="settings.questionNumber" />
+        <label for="exam-passing">Wymagane do zaliczenia</label>
+      </p-float-label>
+    </div>
+    <div class="setting">
+      <span id="exam-can-go-back"><b>Możliwość powrotu do pytań</b></span>
+      <p-select-button ariaLabelledBy="exam-can-go-back" [(ngModel)]="settings.canGoBack" [options]="[false, true]" [allowEmpty]="false" [disabled]="!settings.isGlobalDuration">
+        <ng-template #item let-item>
+          @if (item == false) {
+            <span class="p-button-text" style="color: red">Niedozwolone</span>
+          } @else {
+            <span class="p-button-text" style="color: green">Dozwolone</span>
+          }
+        </ng-template>
+      </p-select-button>
+    </div>
+    <div class="setting">
+      <span id="exam-is-global-time"><b>Ustawienie czasu</b></span>
+      <p-select-button ariaLabelledBy="exam-is-global-time" [(ngModel)]="settings.isGlobalDuration" [options]="[false, true]" [allowEmpty]="false" (onChange)="handleGlobalTime()" disabled>
+        <ng-template #item let-item>
+          @if (item == true) {
+            <span class="p-button-text">Czas na egzamin</span>
+          } @else {
+            <span class="p-button-text">Czas na pytanie</span>
+          }
+        </ng-template>
+      </p-select-button>
+    </div>
+    <div class="setting">
+      <span><b>Widoczność wyników</b></span>
+      <p-select-button [(ngModel)]="settings.showResults" [options]="[false, true]" [allowEmpty]="false">
+        <ng-template #item let-item>
+          @if (item == false) {
+            <span class="p-button-text" style="color: red">Ukryte</span>
+          } @else {
+            <span class="p-button-text" style="color: green">Widoczne</span>
+          }
+        </ng-template>
+      </p-select-button>
+    </div>
+  </div>
+  @if (errors.length > 0) {
+    <p-message severity="error" class="errors">
+      <div>
+        <p><b>Błąd</b></p>
+        <p>Formularz zawiera następujące błędy:</p>
+        @if (errors.length > 0) {
+          <ul>
+            @for (error of errors; track $index) {
+              <li>{{ error }}</li>
+            }
+          </ul>
+        }
+      </div>
+    </p-message>
+  }
+  <div class="actions">
+    @if (mode == 'create') {
+      <p-button
+        label="Anuluj"
+        icon="pi pi-times"
+        severity="danger"
+        (onClick)="cancelExam()"
+        />
+      <p-button
+        label="Utwórz egzamin"
+        icon="pi pi-plus"
+        severity="success"
+        (onClick)="createExam()"
+      />
+    } @else {
+      <p-button
+        label="Zapisz zmiany"
+        icon="pi pi-save"
+        severity="success"
+        (onClick)="updateExam()"
+      />
+    }
+  </div>
+</p-card>

@@ -1,0 +1,17 @@
+<div class="card">
+  <h1>Mamy problem</h1>
+  <p>Przeglądarka, z której korzystasz nie jest wspierana przez naszą platformę. Spróbuj zaktualizować przeglądarkę do najnowszej wersji.</p>
+  <p>Jeśli to nie pomaga może to oznaczać, że masz zainstalowane rozszerzenie, które modyfikuje zachowanie niektórych funkcji przeglądarki, na których polega ta platforma.</p>
+  <p>Wyłącz wszystkie rozszerzenia lub skorzystaj z innej przeglądarki.</p>
+  <button class="btn btn-outline-info" (click)="reload()">Odśwież stronę</button>
+</div>
+
+<div class="card">
+  <h2>Wyniki sprawdzeń</h2>
+  @for (key of checks(); track $index) {
+    <div class="alert" [class.alert-success]="key[1]" [class.alert-danger]="!key[1]">
+      <span><b>{{ key[0] }}:</b></span>
+      <span>{{ key[1] ? 'Pozytywny' : 'Negatywny' }}</span>
+    </div>
+  }
+</div>

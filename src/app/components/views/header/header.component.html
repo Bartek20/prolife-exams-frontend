@@ -1,0 +1,20 @@
+<header>
+  <div class="container">
+    <div class="logo">
+      <img src="/assets/images/logo.webp" alt="Logo firmy">
+      <p>Platforma<br />Egzaminacyjna</p>
+    </div>
+    @if (examService.appState.headerType == 'normal') {}
+    @else if (examService.appState.headerType == 'exit') {
+      <div class="exit">
+        <app-button type="danger" text="Wyjdź" (click)="exitExam()" [isLoading]="isLoading" [disabled]="isLoading" />
+      </div>
+    }
+    @else if (examService.appState.headerType == 'clock' && examService.appState.clockText) {
+      <div class="clock">
+        <img src="/assets/images/clock-regular.svg" alt="" aria-hidden="true">
+        <span>{{ examService.appState.clockText }}</span>
+      </div>
+    }
+  </div>
+</header>

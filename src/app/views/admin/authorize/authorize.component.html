@@ -1,0 +1,14 @@
+<div class="card with-image">
+  <img src="/assets/images/password.jpg" alt="">
+  <div class="container">
+    <h1>Logowanie</h1>
+    <input type="email" class="form-control" [(ngModel)]="email" placeholder="E-mail">
+    <input type="password" class="form-control" [(ngModel)]="password" placeholder="Hasło" (keyup.enter)="login()">
+    @if (error) {
+      <div class="alert alert-danger">
+        {{ error }}
+      </div>
+    }
+    <app-button type="info" width="full" text="Zaloguj" (click)="login()" [disabled]="isLoading" [isLoading]="isLoading" />
+  </div>
+</div>

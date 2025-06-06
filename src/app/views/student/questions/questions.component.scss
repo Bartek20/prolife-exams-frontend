@@ -1,0 +1,11 @@
+.error {
+  margin-top: 1rem;
+}
+.btns {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  &.forward-only {
+    justify-content: flex-end;
+  }
+}

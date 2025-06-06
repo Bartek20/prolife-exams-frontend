@@ -1,0 +1,65 @@
+:host {
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+}
+header {
+  border-bottom: 1px solid #ebeff3;
+  background-color: #fff;
+  padding: 12px;
+  .container {
+    max-width: 1200px;
+    margin-inline: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .5rem;
+    @media print {
+      max-width: unset !important;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      img {
+        width: 64px;
+        height: 64px;
+        padding: 8px;
+        object-fit: contain;
+      }
+      p {
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 1;
+      }
+      @media (max-width: 600px) {
+        img {
+          width: 48px;
+          height: 48px;
+        }
+        p {
+          font-size: 16px;
+        }
+      }
+    }
+    .exit::ng-deep button {
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .clock {
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+      font-size: 1.25rem;
+      span {
+        font-family: "Roboto Mono", sans-serif;
+        font-size: 1.3rem;
+        line-height: 1;
+      }
+      img {
+        height: 24px;
+        width: 24px;
+      }
+    }
+  }
+}

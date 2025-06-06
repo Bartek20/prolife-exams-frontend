@@ -1,0 +1,12 @@
+<button [class]="'btn btn-' + type" [disabled]="disabled" (click)="click()"
+        [style.width]="width == 'auto' ? 'auto' : '100%'"
+        [style.margin-right]="position == 'left' ? 'auto' : ''"
+        [style.margin-left]="position == 'right' ? 'auto' : ''"
+>
+  @if (isLoading) {
+    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+    <span role="status">Ładowanie...</span>
+  } @else {
+    {{ text }}
+  }
+</button>

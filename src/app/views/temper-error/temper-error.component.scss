@@ -1,0 +1,19 @@
+p {
+  line-height: 1.5;
+}
+button {
+  margin-left: auto;
+  display: block;
+  margin-top: .5rem;
+}
+.alert {
+  margin-top: 1rem;
+  margin-bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  padding-block: .75rem;
+  b {
+    font-weight: 600;
+  }
+}

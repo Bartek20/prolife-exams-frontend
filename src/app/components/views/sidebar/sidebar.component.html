@@ -1,0 +1,32 @@
+<aside>
+  <button class="toggle" (click)="toggle()">
+    <img [class.rotate]="isOpen" src="/assets/images/angles-right-solid.svg" [alt]="isOpen ? 'Zamknij sidebar' : 'Otwórz sidebar'">
+  </button>
+  <div class="links">
+    @if (sidebarService.sidebarMode == 'empty') {}
+    @else if (sidebarService.sidebarMode == 'exam' && examService.examState?.questions && !resultsService.results) {
+      @for (question of examService.examState!.questions; track $index) {
+        <button
+          [class.current-question]="examService.appState.currentQuestion?.index == ($index + 1)"
+          [title]="'Przejdź do pytania ' + ($index + 1)"
+          (click)="sidebarService.exam.changeQuestion($index + 1)"
+          [disabled]="question.uuid == '-' || examService.appState.currentQuestion?.index == ($index + 1) || (!examService.examConfig?.can_go_back && examService.appState.currentQuestion?.index || 0 > $index)">{{ $index + 1 }}</button>
+      }
+    }
+    @else if (sidebarService.sidebarMode == 'results' && resultsService.results) {
+      <button class="full" title="Przewiń do wyniku" (click)="sidebarService.results.scrollTo('result')">Wynik</button>
+      @for (question of resultsService.results.questions; track $index) {
+        <button [title]="'Przewiń do pytania ' + ($index + 1)" (click)="sidebarService.results.scrollTo($index)">{{ $index + 1 }}</button>
+      }
+    }
+  </div>
+  <div class="card user-card">
+    <img class="avatar" src="/assets/images/circle-user-regular.svg" alt="">
+    <b>{{ storage.adminToken ? 'Wykładowca' : 'Zdający' }}</b>
+    @if (storage.adminToken) {
+      <button title="Wyloguj się" (click)="sidebarService.teacher.logout()">
+        <img src="/assets/images/arrow-right-from-bracket-solid.svg" alt="Wyloguj się">
+      </button>
+    }
+  </div>
+</aside>

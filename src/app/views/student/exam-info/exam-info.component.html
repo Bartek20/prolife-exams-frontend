@@ -1,0 +1,39 @@
+<div class="card-container">
+  <p-card>
+    <h1>Monitoring testu</h1>
+    <p>Podczas wypełniania testu platforma wykorzystuje kod monitorujący zachowania egzaminowanego.</p>
+    <p>Oznacza to, że każda próba oszustwa zostanie odnotowana, a prowadzący egzamin będzie informowany o każdej podjętej próbie.</p>
+    <p>Może on w takiej sytuacji podjąć decyzję o unieważnieniu egzaminu.</p>
+  </p-card>
+  <p-card>
+    <h1>Informacje o teście</h1>
+    @if (!examService.examConfig!.end_time) {
+      <p>Egzamin dostępny jest od:<br /><b>{{formatDateRange(examService.examConfig!.start_time) }}</b></p>
+    } @else {
+      <p>Egzamin dostępny jest w podanym terminie:<br /><b>{{formatDateRange(examService.examConfig!.start_time, examService.examConfig!.end_time) }}</b></p>
+    }
+    <p>Test składa się z <b>{{ examService.examConfig!.question_number }}</b> {{ formatQuestionsCount(examService.examConfig!.question_number)}}.</p>
+    <p>Aby go zaliczyć musisz poprawnie odpowiedzieć na co najmniej <b>{{ examService.examConfig!.passing_score }}</b> {{ formatQuestionPassingCount(examService.examConfig!.passing_score) }}.</p>
+    @if (examService.examConfig!.is_global_duration) {
+      <p>Na wypełnienie testu masz: <b>{{ formatTime(examService.examConfig!.duration) }}</b></p>
+    }
+    @else {
+      <p>Na udzielenie odpowiedzi na każde pytanie masz <b>{{ formatTime(examService.examConfig!.duration) }}</b>.</p>
+    }
+    <p>Podczas testu przechodzenie do poprzednich pytań jest <b>{{examService.examConfig?.can_go_back ? 'dozwolone' : 'zablokowane'}}</b>.</p>
+    <div style="margin-block: .75rem">
+      @if (!hasExamStarted && !hasExamEnded) {
+        <p-message severity="info" variant="outlined">
+          Test jeszcze się nie rozpoczął. Po rozpoczęciu testu będziesz mógł rozpocząć wypełnianie pytań.
+        </p-message>
+      } @else if (hasExamEnded) {
+        <p-message severity="error" variant="outlined">
+          Test został zakończony. Nie możesz już do niego przystąpić.
+        </p-message>
+      }
+    </div>
+    <div style="display: flex; justify-content: end">
+      <p-button [severity]="hasExamEnded ? 'danger' : 'success'" variant="outlined" [icon]="'pi ' + (hasExamEnded ? 'pi-times-circle' : 'pi-check-circle')" label="Rozpocznij test" [disabled]="!hasExamStarted || hasExamEnded" (onClick)="startExam()" [loading]="isLoading" />
+    </div>
+  </p-card>
+</div>

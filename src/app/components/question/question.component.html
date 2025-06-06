@@ -1,0 +1,44 @@
+<p-panel [header]="'Pytanie ' + question.index" [style]="{'max-width': '800px', 'scroll-margin-top': 'var(--margin, 1rem)'}">
+  @if (mode == 'review') {
+    <ng-template #icons>
+      @if (question.answer != -1) {
+        <span style="font-weight: 700" [ngClass]="{
+        'correct': question.correct == question.answer,
+        'incorrect': question.correct != question.answer }">{{ question.correct == question.answer ? 1 : 0 }}/1</span>
+      }
+    </ng-template>
+  }
+  <div style="margin-bottom: .5rem">
+    <p-message severity="contrast" variant="simple">
+      @if (question.question == 'Brak pytania') {
+        <span>Pytanie nie zostało wylosowane</span>
+      }
+      @else {
+        @for (el of question!.question.split('\\n'); track $index) {
+          <span>{{ el }}</span>
+          @if (!$last) {
+            <br />
+          }
+        }
+      }
+    </p-message>
+    @if (images.question) {
+      <p-image [src]="images.question" alt="Obrazek do pytania" [preview]="true" width="200px" />
+    }
+  </div>
+  @for (option of question!.options; track $index) {
+    <label class="alert form-check" (click)="changeAnswer($index)" [ngClass]="{
+      'alert-primary': mode == 'exam' && selectedAnswer == $index,
+      'alert-success': mode == 'review' && question.correct == $index,
+      'alert-danger': mode == 'review' && question.answer == $index && question.correct != $index,
+      'alert-light': mode == 'review' ? (question.answer != $index && question.correct != $index) : (selectedAnswer != $index && question.answer != $index && question.correct != $index)
+      }">
+      <input class="form-check-input" type="radio"
+       [name]="'answer-' + question.index" [value]="$index"
+       [checked]="mode == 'review' ? (question.answer == $index) : (selectedAnswer == $index)"
+       [disabled]="mode == 'review'" />
+      <b>{{ numberToLetter($index + 1) }}.</b>
+      <p>{{ option }}</p>
+    </label>
+  }
+</p-panel>

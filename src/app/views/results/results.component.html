@@ -1,0 +1,67 @@
+@if (false) {
+  <app-selector [mode]="mode" #exam_selector />
+}
+<!-- Loading -->
+<app-loading [visible]="isLoading" text="Ładowanie wyników..." />
+
+<!-- Results header -->
+@if (resultsService.results || resultsService.resultsHidden) {
+  <app-info [mode]="mode" />
+}
+
+<!-- Results -->
+@if (resultsService.examNotFound || resultsService.resultsHidden || resultsService.authRequired || resultsService.examInProgress) {
+  @if (resultsService.authRequired) {
+    <div class="card">
+      <h1>Wyniki</h1>
+      <p>Aby uzyskać dostęp do wyników podaj dane użyte przy podejściu do testu.</p>
+      <p>Jeśli nie pamiętasz swoich danych skontaktuj się z egzaminatorem w celu uzyskania dostępu.</p>
+    </div>
+  }
+  <div class="card with-image" [class.form]="resultsService.authRequired">
+    <img src="/assets/images/results.jpg" alt="">
+    <div class="container">
+      @if (resultsService.examNotFound) {
+        <h1>Wyniki</h1>
+        <p>Egzamin o podanym UUID nie istnieje lub został usunięty.</p>
+        <p>Sprawdź czy podałeś poprawny kod dostępu do wyników.</p>
+      }
+      @if (resultsService.resultsHidden) {
+        <h1>Wyniki</h1>
+        <p>Wyniki egzaminu są aktualnie ukryte.</p>
+        <p>Zapytaj egzaminatora, o termin dostępności wyników egzaminu.</p>
+      }
+      @if (resultsService.authRequired) {
+        <app-student-info-form (submit)="restoreSession($event)" btnText="Pokaż wyniki" />
+      }
+      @if (resultsService.examInProgress) {
+        <h1>Wyniki</h1>
+        <p>Egzamin nie został jeszcze ukończony.</p>
+        <p>Wyniki będą dostępne po zakończeniu egzaminu.</p>
+      }
+    </div>
+  </div>
+}
+@if (resultsService.results) {
+  <app-result
+    [studentData]="{
+      name: resultsService.results.student.name,
+      surname: resultsService.results.student.surname,
+      email: resultsService.results.student.email
+    }"
+    [examTiming]="{
+      start: resultsService.results.exam.start_time,
+      end: resultsService.results.exam.end_time,
+    }"
+    [examPoints]="{
+      correct: resultsService.results.score.exam,
+      incorrect: 0,
+      total: resultsService.results.score.max,
+      empty: 0,
+      passing: resultsService.results.score.passing
+    }"
+  />
+  @for (question of resultsService.results.questions; track $idx; let $idx = $index) {
+    <app-question mode="review" [question]="question" />
+  }
+}

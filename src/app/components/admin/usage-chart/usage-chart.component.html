@@ -1,0 +1,32 @@
+<p-card header="Statystyki wypełnień">
+  <div class="actions">
+    <p-button severity="secondary" icon="pi pi-chevron-left" label="Poprzedni" (onClick)="dateChange('prev')" />
+    <p-select-button [options]="['week', 'month', 'year']" (onChange)="chartChange($event)" [ngModel]="statsMode">
+      <ng-template let-option #item>
+        @switch (option) {
+          @case ('week') {
+            <span>Tydzień</span>
+          }
+          @case ('month') {
+            <span>Miesiąc</span>
+          }
+          @case ('year') {
+            <span>Rok</span>
+          }
+        }
+      </ng-template>
+    </p-select-button>
+    <p-button severity="secondary" icon="pi pi-chevron-right" iconPos="right" label="Następny" (onClick)="dateChange('next')" />
+  </div>
+  @if (loading) {
+    <div style="height: 500px; display: flex; flex-direction: column; gap: 1rem; align-items: center; justify-content: center;">
+      <p-progress-spinner [style]="{ width: '128px', height: '128px' }" strokeWidth="3" />
+      <span style="font-size: 1.5rem"><b>Ładowanie danych...</b></span>
+    </div>
+  }
+  @else {
+    <div style="overflow: auto">
+      <p-chart #chart type="bar" [data]="parsedStats" [options]="chartOptions" width="max(100%, 500px)" height="500px" [ariaLabel]="ariaLabel"></p-chart>
+    </div>
+  }
+</p-card>

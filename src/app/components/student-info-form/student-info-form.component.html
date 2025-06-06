@@ -1,0 +1,16 @@
+<div class="container">
+  <h1>Dane osobowe</h1>
+  <input class="form-control" [ngClass]="{ 'has-error': nameError }" type="text" name="name" [(ngModel)]="name" placeholder="Imię">
+  @if (nameError) {
+    <span class="error-info">{{ nameError }}</span>
+  }
+  <input class="form-control" [ngClass]="{ 'has-error': surnameError }" type="text" name="surname" [(ngModel)]="surname" placeholder="Nazwisko">
+  @if (surnameError) {
+    <span class="error-info">{{ surnameError }}</span>
+  }
+  <input class="form-control" [ngClass]="{ 'has-error': emailError }" type="email" name="email" [(ngModel)]="email" placeholder="E-mail" (keyup.enter)="submitForm()">
+  @if (emailError) {
+    <span class="error-info">{{ emailError }}</span>
+  }
+  <app-button type="info" width="full" [text]="btnText" (click)="submitForm()" [disabled]="isLoading" [isLoading]="isLoading" />
+</div>

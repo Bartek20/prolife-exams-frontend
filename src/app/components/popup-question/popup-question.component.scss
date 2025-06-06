@@ -1,0 +1,30 @@
+:host {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9998;
+  margin-top: var(--header-size);
+  padding-block: var(--margin);
+  .card {
+    max-width: 500px;
+    max-height: 100%;
+    margin-top: 0;
+    overflow: auto;
+  }
+  h5 {
+    margin-bottom: .5rem;
+    font-size: 1.2rem;
+  }
+  p {
+    line-height: 1.5;
+  }
+  .btns {
+    margin-top: 1rem;
+    display: flex;
+    gap: .5rem;
+    justify-content: flex-end;
+  }
+}

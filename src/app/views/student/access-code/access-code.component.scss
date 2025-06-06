@@ -1,0 +1,16 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+h1 {
+  margin-bottom: 0;
+  font-size: 1.75rem;
+}
+input {
+  width: 100%;
+}
+::ng-deep .p-card-body {
+  justify-content: center;
+}
+

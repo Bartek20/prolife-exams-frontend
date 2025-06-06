@@ -1,0 +1,33 @@
+<app-loading [visible]="!!isLoading" [text]="isLoading == 'question' ? 'Ładowanie pytania...' : 'Zakańczanie egzaminu...'" />
+
+@if (examService.appState.currentQuestion) {
+  <app-question mode="exam" [question]="examService.appState.currentQuestion" (answer)="changeAnswer($event)" />
+  <p-card [style]="{ 'max-width': '800px' }">
+    <div class="btns" [ngClass]="{ 'forward-only': !examService.examConfig!.can_go_back || examService.appState.currentQuestion!.index == 1 }">
+      @if (examService.examConfig!.can_go_back && examService.appState.currentQuestion!.index > 1) {
+        <p-button severity="info" icon="pi pi-arrow-left" label="Poprzednie pytanie" (onClick)="changeQuestion(examService.appState.currentQuestion!.index - 1)" />
+      }
+      @if (examService.examConfig!.question_number != examService.appState.currentQuestion!.index) {
+        <p-button severity="info" icon="pi pi-arrow-right" iconPos="right" label="Następne pytanie" (onClick)="changeQuestion(examService.appState.currentQuestion!.index + 1)" />
+      }
+      @else {
+        <p-button severity="danger" icon="pi pi-verified" label="Zakończ egzamin" (onClick)="finishExam()" />
+      }
+    </div>
+    @if (error) {
+      <div class="error">
+        <p-message severity="error">
+          {{ error }}
+        </p-message>
+      </div>
+    }
+  </p-card>
+}
+@if (askBeforeContinue) {
+  <app-popup-question
+    title="Czy na pewno chcesz kontynuować?"
+    message="Sprawdź czy na pewno odpowiedziałeś na wszystkie pytania. Po zakończeniu egzaminu nie będzie możliwości dokonania zmian."
+    cancelText="Anuluj" confirmText="Zakończ egzamin"
+    (cancel)="closePopup()" (confirm)="fetchFinish()"
+  />
+}

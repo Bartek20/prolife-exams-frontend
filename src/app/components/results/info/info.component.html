@@ -1,0 +1,76 @@
+<p-card [style]="{ 'max-width': '800px' }">
+  <div class="exam-info">
+    <p><b>{{ resultsService.results?.exam?.name || 'Egzamin ukryty' }}</b></p>
+    @if (mode == 'teacher' || !resultsService.results?.exam?.isDEMO) {
+      <p-button severity="info" icon="pi pi-download" label="Zapisz wyniki" (onClick)="saveExam()" />
+    }
+    @else {
+      <p-button severity="success" icon="pi pi-replay" label="Spróbuj ponownie" (onClick)="retryExam()" />
+    }
+  </div>
+</p-card>
+<p-dialog header="Zapisz wyniki" [(visible)]="isSaveModal" [style]="{'width': 'min(100%, 600px)'}" [modal]="true" [closeOnEscape]="true" [dismissableMask]="true">
+  <ng-template #header>
+    <div class="heading">
+      <h4>Zapisz wyniki</h4>
+      <div class="btns">
+        <button class="btn" [class.active]="tab == 'link'" (click)="changeTab('link')">Link</button>
+        <button class="btn" [class.active]="tab == 'mail'" (click)="changeTab('mail')">Email</button>
+        <button class="btn" [class.active]="tab == 'pdf'" (click)="changeTab('pdf')">PDF</button>
+      </div>
+    </div>
+  </ng-template>
+  <div class="tab-content">
+    @if (tab === 'link') {
+      <h5>Link do strony z wynikami</h5>
+      <p>Zapisz ten link, aby w przyszłości uzyskać dostęp do wyników.</p>
+      <div class="alert alert-warning">
+        <h5 class="alert-heading">Uwaga!</h5>
+        <p>Link pozostanie aktywny dopóki egzaminator nie usunie wyników z bazy danych. Po tym terminie uzyskanie do nich dostępu nie będzie możliwe.</p>
+      </div>
+      <div class="input-container">
+        <input type="text" id="link" class="form-control" [value]="getURL()" readonly />
+        <p-button severity="success" variant="outlined" icon="pi pi-copy" [label]="!isCopied ? 'Skopiuj link' : 'Skopiowano'" (onClick)="copyLink()" [disabled]="isCopied" [style]="{'white-space': 'nowrap', 'width': '150px'}" />
+      </div>
+    }
+    @else if (tab === 'mail') {
+      <h5>Email z linkiem do strony z wynikami</h5>
+      <p>Na podany email otrzymasz link pozwalający na dostęp do wyników.</p>
+      <div class="alert alert-warning">
+        <h5 class="alert-heading">Uwaga!</h5>
+        <p>Otrzymany link pozostanie aktywny dopóki egzaminator nie usunie wyników z bazy danych. Po tym terminie uzyskanie do nich dostępu nie będzie możliwe.</p>
+      </div>
+      @if (true) {
+        <div class="alert alert-danger">
+          <h5 class="alert-heading">Uwaga!</h5>
+          <p>Ta opcja nie jest jeszcze dostępna.</p>
+        </div>
+      }
+      @else {
+        <div class="input-container">
+          <input type="email" class="form-control" placeholder="Email" />
+          <p-button severity="success" variant="outlined" icon="pi pi-envelope" label="Wyślij email" (onClick)="sendMail()" [style]="{'white-space': 'nowrap', 'width': '150px'}" />
+        </div>
+      }
+    }
+    @else {
+      <h5>Plik PDF z wynikami</h5>
+      <p>Pobierz wyniki testu w formie pliku PDF.</p>
+      @if (resultsHidden) {
+        <div class="alert alert-danger">
+          <h5 class="alert-heading">Błąd!</h5>
+          <p>Wyniki egzaminu są aktualnie ukryte.<br />Nie można pobrać wyników.</p>
+        </div>
+      }
+      @else {
+        <div class="alert alert-warning">
+          <h5 class="alert-heading">Uwaga!</h5>
+          <p>Wygenerowany plik PDF zabezpieczony jest hasłem.<br />Hasło do pliku to imię i nazwisko zdającego podane podczas podejścia do testu pisane małymi literami bez spacji.</p>
+        </div>
+      }
+      <div class="input-container">
+        <p-button severity="success" variant="outlined" icon="pi pi-file-pdf" label="Pobierz PDF" (onClick)="getPdf()" [disabled]="resultsHidden || isLoading" [style]="{'white-space': 'nowrap', 'width': '150px'}" [loading]="isLoading" />
+      </div>
+    }
+  </div>
+</p-dialog>

@@ -1,0 +1,8 @@
+<div class="card">
+  <h5 class="card-title">{{ title }}</h5>
+    <p>{{ message }}</p>
+  <div class="btns">
+    <app-button type="danger" text="Anuluj" (click)="onCancel()" />
+    <app-button type="success" text="Zakończ egzamin" (click)="onConfirm()" />
+  </div>
+</div>

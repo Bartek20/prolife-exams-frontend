@@ -1,0 +1,14 @@
+.card {
+  max-width: 800px;
+  scroll-margin-block: 1rem;
+  &.with-image:not(.form) {
+    grid-template-rows: 200px;
+    @media (max-width: 768px) {
+      grid-template-rows: auto auto;
+    }
+  }
+  > .container {
+    text-align: center;
+    text-wrap: balance;
+  }
+}

@@ -1,0 +1,84 @@
+.exam-info {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+}
+.btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2px;
+  background-color: rgba(0,0,0,.05);
+  padding: 2px;
+  border-radius: 6px;
+  @media (max-width: 600px) {
+    width: 100%;
+  }
+  @media (max-width: 300px) {
+    grid-template-columns: 1fr;
+  }
+  .btn {
+    color: rgba(0,0,0,.6);
+    font-weight: 600;
+    border: 0;
+    width: 100px;
+    @media (max-width: 600px) {
+      width: unset;
+    }
+  }
+  .active {
+    background-color: white;
+    color: black
+  }
+  :hover {
+    background-color: rgba(255,255,255,.75);
+    color: rgba(0,0,0,.75);
+  }
+}
+.tab-content {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  padding-block: 1rem;
+  border-block: 1px solid rgba(0,0,0,.1);
+}
+.heading {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.footing {
+  display: flex;
+  justify-content: flex-end;
+}
+.input-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: .5rem;
+  @media (max-width: 400px) {
+    flex-direction: column;
+  }
+  input {
+    text-overflow: ellipsis;
+  }
+  .copy-btn::ng-deep button {
+    width: 125px !important;
+  }
+}
+.alert {
+  margin-bottom: 0;
+}
+h4 {
+  font-size: 1.2rem;
+}
+h5 {
+  font-size: 1rem;
+}
+.tab-content > h5 {
+  margin-bottom: -0.7rem;
+}

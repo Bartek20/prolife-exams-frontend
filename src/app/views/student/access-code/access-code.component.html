@@ -1,0 +1,18 @@
+<p-card styleClass="with-image">
+  <ng-template #header>
+    <img src="/assets/images/exam-1.jpg" alt="">
+  </ng-template>
+  <div class="form">
+    <h1>Podaj kod dostępu do testu</h1>
+    <p-float-label variant="on">
+      <input type="text" id="access_code" pInputText [pAutoFocus]="!access_code" [ngClass]="{ 'has-error': errorMessage }" [(ngModel)]="access_code" (keyup.enter)="getExamConfig()">
+      <label for="access_code">Kod dostępu</label>
+    </p-float-label>
+    @if (errorMessage) {
+      <p-message severity="error" variant="outlined">
+        {{ errorMessage }}
+      </p-message>
+    }
+    <p-button severity="info" icon="pi pi-check" label="Otwórz test" [style]="{'width': '100%'}" (onClick)="getExamConfig()" [loading]="isLoading" />
+  </div>
+</p-card>

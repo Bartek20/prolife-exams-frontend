@@ -39,6 +39,12 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "sourceMap": {
+              "scripts": true,
+              "styles": true,
+              "vendor": true,
+              "hidden": true
+            },
             "outputPath": "dist/prolife-exams",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -63,8 +69,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "2MB",
+                  "maximumError": "4MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -72,7 +78,18 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": {
+                "styles": {
+                  "inlineCritical": true,
+                  "minify": true,
+                  "removeSpecialComments": true
+                },
+                "scripts": true,
+                "fonts": {
+                  "inline": true
+                }
+              }
             },
             "development": {
               "optimization": false,
@@ -84,6 +101,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "src/proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "PROLIFE_Exams:build:production"

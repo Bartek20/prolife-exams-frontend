@@ -1,0 +1,69 @@
+<p-card>
+  <ng-template #title>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap">
+      <div>Lista egzaminów</div>
+      <p-button severity="success" variant="outlined" icon="pi pi-plus" label="Utwórz egzamin" (onClick)="createExam()" />
+    </div>
+  </ng-template>
+  <p-table [value]="exams" [paginator]="true" [rows]="10" [alwaysShowPaginator]="false">
+    <ng-template #header>
+      <tr>
+        <th style="width: 0">ID</th>
+        <th>Nazwa</th>
+        <th style="width: 0">Czas</th>
+        <th style="width: 0">Status</th>
+        <th style="width: 0">Odp.</th>
+        <th style="width: 0"></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-exam>
+      <tr>
+        @if (exam.loading) {
+          <td colspan="6">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 1rem">
+              <p-progress-spinner strokeWidth="5" fill="transparent" animationDuration="1s" [style]="{ width: '32px', height: '32px' }" />
+              <span style="font-size: 1.25rem; font-weight: 500">Ładowanie...</span>
+            </div>
+          </td>
+        } @else if (exam.empty) {
+          <td colspan="6" style="text-align: center">
+            <span style="font-size: 1.25rem; font-weight: 500">Brak egzaminów</span>
+          </td>
+        } @else {
+          <td>
+            <b>{{exam.id}}</b>
+          </td>
+          <td class="exam-name">
+            <a [routerLink]="'/wykladowca/egzamin/' + exam.id">{{exam.name}}</a>
+          </td>
+          <td>
+            <div style="white-space: nowrap">
+              <p><b>R:</b> {{parseTime(exam.start_time)}}</p>
+              @if (exam.end_time) {
+                <p><b>Z:</b> {{parseTime(exam.end_time)}}</p>
+              }
+              @else {
+                <p><b>Z:</b> ---</p>
+              }
+            </div>
+          </td>
+          <td>
+            <p-message
+              [style]="{
+'width': 'fit-content', 'margin': '0 auto', 'padding': '0.5rem 1rem', 'border-radius': '1rem', 'font-size': '1.25rem'
+          }"
+              [severity]="exam.status == 'upcoming' ? 'warn' : exam.status == 'ongoing' ? 'success' : 'error'">
+              {{parseStatus(exam.status)}}
+            </p-message>
+          </td>
+          <td style="text-align: center">
+            <b>{{ exam.responses }}</b>
+          </td>
+          <td>
+            <p-button icon="pi pi-chevron-right" text severity="contrast" (onClick)="openExam(exam.id)" ariaLabel="Otwórz egzamin"/>
+          </td>
+        }
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>

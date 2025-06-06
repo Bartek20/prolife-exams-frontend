@@ -1,0 +1,12 @@
+<div class="card with-image">
+  <img src="/assets/images/students.jpg" alt="">
+  <div class="container">
+    <app-student-info-form (submit)="startExam($event)" btnText="Rozpocznij test" [isLoading]="isLoading" />
+    @if (error) {
+        <div class="alert alert-danger">
+            <h5 class="alert-heading">Błąd!</h5>
+            <p>{{ error }}</p>
+        </div>
+    }
+  </div>
+</div>
