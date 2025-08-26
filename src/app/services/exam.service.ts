@@ -79,6 +79,14 @@ export class ExamService {
           this.storage.accessCode = null
           this.storage.responseUuid = resp.uuid
           this.storage.examToken = resp.token
+
+          this.storage.result = {key: resp.uuid, value: {
+              exam_name: this.examConfig!.name,
+              exam_time: new Date().getTime(),
+              exam_token: resp.token,
+              student: name + ' ' + surname,
+            }}
+
           this.router.navigate(['/egzamin/pytania'], {
             replaceUrl: true
           })
@@ -96,10 +104,10 @@ export class ExamService {
     return new Observable<void>(observer => {
       this.http.get('/api/exam/state').subscribe({
         next: (resp: any) => {
-          if (resp.exam.end_time) observer.error()
+          if (resp.state.end_time) observer.error()
           else {
             this.examConfig = resp.config;
-            this.examState = resp.exam;
+            this.examState = resp.state;
             observer.next();
           }
           observer.complete();
@@ -119,14 +127,6 @@ export class ExamService {
         info: any
       }>('/api/exam/finish', {}).subscribe({
         next: (resp) => {
-          this.storage.result = {key: this.examState!.uuid, value: {
-              exam_name: resp.info.exam_name,
-              exam_time: new Date(resp.info.exam_date).getTime(),
-              exam_token: resp.token,
-              student: resp.info.student_info.name + ' ' + resp.info.student_info.surname,
-            }}
-          this.storage.responseUuid = null;
-          this.storage.examToken = null;
           this.router.navigate([`/egzamin/wyniki/${this.examState!.uuid}`], {
             replaceUrl: true
           });

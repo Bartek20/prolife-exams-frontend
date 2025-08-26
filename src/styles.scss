@@ -21,7 +21,7 @@ html, body {
 
 body {
   background-color: #f1f5f8;
-  > div[style]:not(.p-dialog-mask) {
+  > div[style]:not(.p-dialog-mask):not(.p-datepicker-panel) {
     display: none !important;
   }
 }
@@ -92,6 +92,9 @@ h1 {
   @media print {
     max-width: unset !important;
   }
+}
+p-card > div {
+  scroll-margin-top: var(--margin);
 }
 .card.with-image, .p-card.with-image {
   display: grid;

@@ -13,6 +13,7 @@ import {ProgressSpinner} from 'primeng/progressspinner';
 import {Message} from 'primeng/message';
 import {ConfirmDialog} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-exam',
@@ -27,7 +28,8 @@ import {ConfirmationService} from 'primeng/api';
     Button,
     ProgressSpinner,
     Message,
-    ConfirmDialog
+    ConfirmDialog,
+    DatePipe
   ],
   templateUrl: './exam.component.html',
   styleUrl: './exam.component.scss'
@@ -136,7 +138,7 @@ export class ExamComponent implements OnInit {
       message: this.responsesMode == 'normal' ? 'Czy na pewno chcesz usunąć odpowiedź?' : 'Czy na pewno chcesz usunąć odpowiedź?<br />Nie będzie można jej przywrócić.',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.teacherService.removeResponse(uuid).subscribe({
+        this.teacherService.removeResponse(this.examId, uuid).subscribe({
           next: () => {
             if (this.responsesMode === 'trash') {
               this.responsesCounts.trash--
@@ -166,7 +168,7 @@ export class ExamComponent implements OnInit {
 
   }
   restoreResponse(uuid: string) {
-    this.teacherService.restoreResponse(uuid).subscribe({
+    this.teacherService.restoreResponse(this.examId, uuid).subscribe({
       next: () => {
         this.responsesCounts.trash--
         this.responsesCounts.normal++

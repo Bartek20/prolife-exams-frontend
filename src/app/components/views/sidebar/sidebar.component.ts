@@ -19,7 +19,6 @@ export class SidebarComponent {
     protected sidebarService: SidebarService,
     protected storage: StorageService,
     protected examService: ExamService,
-    protected teacherService: TeacherService,
     protected resultsService: ResultsService) {
   }
 

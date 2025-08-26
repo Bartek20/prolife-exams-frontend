@@ -54,14 +54,24 @@ export class AppComponent implements OnInit {
     new TemperChecker(this.router);
     this.router.events.subscribe((event) => {
       if (!(event instanceof NavigationEnd)) return
-      const newRoute = event.urlAfterRedirects.split('/')
+      const newRoute = event.urlAfterRedirects.split('?')[0].split('/')
       if (!newRoute) return;
       if (newRoute.includes('pytania')) {
         this.sidebarService.sidebarMode = 'exam';
         return
       }
-      if (newRoute.includes('wyniki')) {
+      if (newRoute.includes('wyniki') && !newRoute.includes('wykladowca')) {
         this.sidebarService.sidebarMode = 'results';
+        return
+      }
+      if (newRoute.includes('wykladowca') && !newRoute.includes('logowanie')) {
+        this.sidebarService.sidebarMode = 'teacher.home';
+        if (newRoute.includes('egzamin') && !newRoute.includes('utworz')) {
+          this.sidebarService.sidebarMode = 'teacher.exam';
+        }
+        if (newRoute.includes('wyniki')) {
+          this.sidebarService.sidebarMode = 'teacher.results';
+        }
         return
       }
       this.sidebarService.sidebarMode = 'empty'

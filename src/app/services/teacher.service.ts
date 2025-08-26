@@ -37,7 +37,7 @@ export class TeacherService {
       }
       this.getCSRFCookie().subscribe({
         next: () => {
-          this.http.post('/api/admin/check', {}, {
+          this.http.get('/api/auth/check', {
             headers: {
               'Authorization': `Bearer ${this.storage.adminToken}`,
             },
@@ -60,7 +60,7 @@ export class TeacherService {
 
   authorize(email: string, password: string) {
     return new Observable<void>(observer => {
-      this.http.post<authorizeResponse>('/api/admin/tokenize', {
+      this.http.post<authorizeResponse>('/api/auth/login', {
         email,
         password,
       }, {
@@ -123,7 +123,7 @@ export class TeacherService {
   }
   createExam(data: any) {
     return new Observable<number>(observer => {
-      this.http.post('/api/admin/exam/create', data, {}).subscribe({
+      this.http.post('/api/admin/exams', data, {}).subscribe({
         next: (resp: any) => {
           observer.next(resp.exam_id);
           observer.complete();
@@ -137,7 +137,7 @@ export class TeacherService {
   }
   modifyExam(id: number, data: any) {
     return new Observable<void>(observer => {
-      this.http.post(`/api/admin/exam/${id}/modify`, data, {}).subscribe({
+      this.http.put(`/api/admin/exams/${id}`, data, {}).subscribe({
         next: () => {
           observer.next();
           observer.complete();
@@ -152,7 +152,7 @@ export class TeacherService {
 
   getExam(id: number) {
     return new Observable<any>(observer => {
-      this.http.get(`/api/admin/exam/${id}`, {}).subscribe({
+      this.http.get(`/api/admin/exams/${id}`, {}).subscribe({
         next: (resp: any) => {
           observer.next(resp.exam);
           observer.complete();
@@ -166,7 +166,7 @@ export class TeacherService {
   }
   getStats(id: number, date: string) {
     return new Observable<any>(observer => {
-      this.http.get(`/api/admin/exam/${id}/stats/${date}`).subscribe({
+      this.http.get(`/api/admin/exams/${id}/stats/${date}`).subscribe({
         next: (resp: any) => {
           observer.next(resp.stats);
           observer.complete();
@@ -180,7 +180,7 @@ export class TeacherService {
   }
   getResponses(id: number, trashed: boolean = false) {
     return new Observable<any>(observer => {
-      this.http.get(`/api/admin/exam/${id}/responses`, {
+      this.http.get(`/api/admin/exams/${id}/responses`, {
         params: {
           trashed: trashed,
         }
@@ -198,7 +198,7 @@ export class TeacherService {
   }
   getResponsesList(id: number) {
     return new Observable<any>(observer => {
-      this.http.get(`/api/admin/exam/${id}/responses/list`, {}).subscribe({
+      this.http.get(`/api/admin/exams/${id}/responses/list`, {}).subscribe({
         next: (resp: any) => {
           observer.next(resp.responses);
           observer.complete();
@@ -225,9 +225,9 @@ export class TeacherService {
       })
     })
   }
-  removeResponse(uuid: string) {
+  removeResponse(exam: number, uuid: string) {
     return new Observable<void>(observer => {
-      this.http.post(`/api/admin/response/${uuid}/remove`, {}, {}).subscribe({
+      this.http.delete(`/api/admin/exams/${exam}/response/${uuid}`, {}).subscribe({
         next: () => {
           observer.next();
           observer.complete();
@@ -239,9 +239,9 @@ export class TeacherService {
       })
     })
   }
-  restoreResponse(uuid: string) {
+  restoreResponse(exam: number, uuid: string) {
     return new Observable<void>(observer => {
-      this.http.post(`/api/admin/response/${uuid}/restore`, {}, {}).subscribe({
+      this.http.patch(`/api/admin/exams/${exam}/response/${uuid}`, {}, {}).subscribe({
         next: () => {
           observer.next();
           observer.complete();

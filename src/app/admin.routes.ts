@@ -6,6 +6,7 @@ import {ExamComponent} from './views/admin/exam/exam.component';
 import {ResponseComponent} from './views/admin/response/response.component';
 import {DashboardComponent} from './views/admin/dashboard/dashboard.component';
 import {ResultsComponent} from './views/results/results.component';
+import {CertificatesComponent} from './views/admin/certificates/certificates.component';
 
 export const routes: Routes = [
   {
@@ -41,5 +42,9 @@ export const routes: Routes = [
     data: {
       mode: 'teacher'
     }
+  },
+  {
+    path: 'certyfikacja',
+    component: CertificatesComponent
   }
 ]

@@ -37,22 +37,22 @@ export class BlurSpy {
       }
     };
     const focusMonitoring = ()=> {
-      this.blurMonitor = window.setInterval(() => {
-        if (document.hasFocus()) {
-          if (this.isBlurred) {
-            this.onFocusRestore();
-          }
-          const timestamp = (new Date()).getTime();
-          this.lastFocus = timestamp;
-          this.isBlurred = false;
-          if (focusId && localStorage) {
-            localStorage.setItem(focusId, String(timestamp));
-          }
-          return
-        }
-        const z = (((new Date()).getTime() - this.lastFocus) > allowedMargin);
-        if (z && !this.isBlurred) handleBlur();
-      }, 100);
+      // this.blurMonitor = window.setInterval(() => {
+      //   if (document.hasFocus()) {
+      //     if (this.isBlurred) {
+      //       this.onFocusRestore();
+      //     }
+      //     const timestamp = (new Date()).getTime();
+      //     this.lastFocus = timestamp;
+      //     this.isBlurred = false;
+      //     if (focusId && localStorage) {
+      //       localStorage.setItem(focusId, String(timestamp));
+      //     }
+      //     return
+      //   }
+      //   const z = (((new Date()).getTime() - this.lastFocus) > allowedMargin);
+      //   if (z && !this.isBlurred) handleBlur();
+      // }, 100);
     }
 
     // Handle blur on page refresh

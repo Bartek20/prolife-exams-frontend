@@ -38,7 +38,7 @@ export class QuestionsComponent implements OnInit {
     this.examService.setupFocusMonitoring()
     this.examService.getState(this.storage.responseUuid!).subscribe({
       next: () => {
-        const index = this.examService!.examState!.questions.find(e => e.answer == -1)?.index
+        const index = this.examService!.examState!.questions.find(e => e.answer == null)?.index
         this.fetchQuestion(index ?? 1);
         if (this.examService.examConfig!.is_global_duration) {
           this.setupClock(this.examService.examState!.start_time)

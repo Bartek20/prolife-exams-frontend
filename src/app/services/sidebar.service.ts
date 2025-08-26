@@ -1,20 +1,18 @@
 import { Injectable } from '@angular/core';
 import {ExamService} from './exam.service';
-import {StorageService} from './storage.service';
-import {ResultsService} from './results.service';
 import {TeacherService} from './teacher.service';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SidebarService {
-  sidebarMode: 'empty' | 'exam' | 'results' = 'empty';
+  sidebarMode: 'empty' | 'exam' | 'results' | 'teacher.home' | 'teacher.exam' | 'teacher.results' = 'empty';
 
   constructor(
+    private router: Router,
     private examService: ExamService,
     private teacherService: TeacherService,
-    private resultsService: ResultsService,
-    private storage: StorageService
   ) {}
 
   empty = {}
@@ -30,6 +28,22 @@ export class SidebarService {
     }
   }
   teacher = {
+    exams: () => this.router.navigate(['/wykladowca/egzaminy']),
+    certificates: () => this.router.navigate(['/wykladowca/certyfikacja']),
+    exam: {
+      settings: () => {
+        const element = document.querySelector('app-exam-settings p-card > div');
+        element?.scrollIntoView({ behavior: 'smooth' });
+      },
+      stats: () => {
+        const element = document.querySelector('app-usage-chart p-card > div');
+        element?.scrollIntoView({ behavior: 'smooth' });
+      },
+      responses: () => {
+        const element = document.querySelector('app-usage-chart + p-card > div');
+        element?.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
     logout: () => this.teacherService.logout().subscribe()
   }
 }

@@ -1,0 +1,45 @@
+<p-card header="Generowanie certyfikatów">
+  <p-table [value]="toGenerateCerts">
+    <ng-template #header>
+      <tr>
+        <th style="width: 0; white-space: nowrap">Egzaminowany</th>
+        <th style="width: 0; white-space: nowrap">Instruktor</th>
+        <th style="width: 0; white-space: nowrap">Numer certyfikatu</th>
+        <th style="width: 0; white-space: nowrap">Data wystawienia</th>
+        <th style="width: 0; white-space: nowrap"></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-certificate let-i="rowIndex">
+      <tr>
+        @if (!certificate.generated) {
+          <td [pEditableColumn]="certificate.student" pEditableColumnField="student">
+            <input type="text" pInputText [(ngModel)]="certificate.student" />
+          </td>
+          <td [pEditableColumn]="certificate.instructor" pEditableColumnField="instructor">
+            <input type="text" pInputText [(ngModel)]="certificate.instructor" />
+          </td>
+          <td [pEditableColumn]="certificate.number" pEditableColumnField="number">
+            <input type="text" pInputText [(ngModel)]="certificate.number" />
+          </td>
+          <td [pEditableColumn]="certificate.date" pEditableColumnField="date">
+            <p-date-picker [(ngModel)]="certificate.date" appendTo="body" />
+          </td>
+          <td style="width: 0">
+            <p-button icon="pi pi-times" (click)="removeCertificate(i)" severity="danger" [disabled]="toGenerateCerts.length == 1" />
+          </td>
+        }
+        @else {
+          <td>{{ certificate.student }}</td>
+          <td>{{ certificate.instructor }}</td>
+          <td>{{ certificate.number }}</td>
+          <td>{{ certificate.date | date: 'dd/MM/yyyy' }}</td>
+          <td style="width: 0">
+            <p-button icon="pi pi-download" (click)="downloadCertificate(certificate.number)" severity="success" />
+          </td>
+        }
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-button label="Dodaj certyfikat" (click)="addCertificate()" icon="pi pi-plus"></p-button>
+  <p-button label="Generuj certyfikaty" (click)="generateCertificates()" [disabled]="!toGenerateCerts.length"></p-button>
+</p-card>

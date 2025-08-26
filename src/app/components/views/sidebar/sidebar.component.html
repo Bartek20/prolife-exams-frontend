@@ -4,19 +4,32 @@
   </button>
   <div class="links">
     @if (sidebarService.sidebarMode == 'empty') {}
-    @else if (sidebarService.sidebarMode == 'exam' && examService.examState?.questions && !resultsService.results) {
-      @for (question of examService.examState!.questions; track $index) {
-        <button
-          [class.current-question]="examService.appState.currentQuestion?.index == ($index + 1)"
-          [title]="'Przejdź do pytania ' + ($index + 1)"
-          (click)="sidebarService.exam.changeQuestion($index + 1)"
-          [disabled]="question.uuid == '-' || examService.appState.currentQuestion?.index == ($index + 1) || (!examService.examConfig?.can_go_back && examService.appState.currentQuestion?.index || 0 > $index)">{{ $index + 1 }}</button>
+    @if (sidebarService.sidebarMode == 'exam') {
+      @if (examService.examState?.questions && !resultsService.results) {
+        @for (question of examService.examState!.questions; track $index) {
+          <button
+            [class.current-question]="examService.appState.currentQuestion?.index == ($index + 1)"
+            [title]="'Przejdź do pytania ' + ($index + 1)"
+            (click)="sidebarService.exam.changeQuestion($index + 1)"
+            [disabled]="question.uuid == '-' || examService.appState.currentQuestion?.index == ($index + 1) || (!examService.examConfig?.can_go_back && examService.appState.currentQuestion?.index || 0 > $index)">{{ $index + 1 }}</button>
+        }
       }
     }
-    @else if (sidebarService.sidebarMode == 'results' && resultsService.results) {
-      <button class="full" title="Przewiń do wyniku" (click)="sidebarService.results.scrollTo('result')">Wynik</button>
-      @for (question of resultsService.results.questions; track $index) {
-        <button [title]="'Przewiń do pytania ' + ($index + 1)" (click)="sidebarService.results.scrollTo($index)">{{ $index + 1 }}</button>
+    @if (sidebarService.sidebarMode.startsWith('teacher')) {
+      <button class="full" title="Egzaminy" (click)="sidebarService.teacher.exams()">Egzaminy</button>
+      <button class="full" title="Certyfikaty" (click)="sidebarService.teacher.certificates()">Certyfikaty</button>
+      @if (sidebarService.sidebarMode == 'teacher.exam') {
+        <button class="full" title="Ustawienia" (click)="sidebarService.teacher.exam.settings()">Ustawienia</button>
+        <button class="full" title="Statystyki" (click)="sidebarService.teacher.exam.stats()">Statystyki</button>
+        <button class="full" title="Odpowiedzi" (click)="sidebarService.teacher.exam.responses()">Odpowiedzi</button>
+      }
+    }
+    @if (sidebarService.sidebarMode.includes('results')) {
+      @if (resultsService.results) {
+        <button class="full" title="Przewiń do wyniku" (click)="sidebarService.results.scrollTo('result')">Wynik</button>
+        @for (question of resultsService.results.questions; track $index) {
+          <button [title]="'Przewiń do pytania ' + ($index + 1)" (click)="sidebarService.results.scrollTo($index)">{{ $index + 1 }}</button>
+        }
       }
     }
   </div>

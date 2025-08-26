@@ -71,7 +71,7 @@ export class ResultsService {
         error: (err) => {
           if (err.error) {
             this.resultsHidden = err.error.error == 'Results are not available';
-            this.authRequired = err.error.error == 'Auth required';
+            this.authRequired = err.error.error == 'Unauthorized.';
             this.examNotFound = err.error.error == 'Response not found';
             this.examInProgress = err.error.error == 'Exam has not ended';
           }
